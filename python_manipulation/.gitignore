@@ -1,0 +1,11 @@
+# Ambientes Virtuais (Não queremos subir a pasta venv inteira)
+.venv/
+venv/
+env/
+
+# Arquivos de Configuração Sensíveis (SEGURANÇA!)
+.env
+
+# Pastas de cache do Python
+__pycache__/
+*.py[cod]
