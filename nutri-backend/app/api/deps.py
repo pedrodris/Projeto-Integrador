@@ -1,50 +1,51 @@
-# app/api/deps.py
+from typing import Any, Annotated
 
-from typing import Annotated, Any
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from fastapi import Depends, Header, HTTPException, status
+from app.core.supabase import supabase_public
 
-from app.core.supabase import supabase
+# Esquema de segurança Bearer para o Swagger/OpenAPI
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
 def get_bearer_token(
-    authorization: Annotated[str | None, Header()] = None,
+    credentials: Annotated[
+        HTTPAuthorizationCredentials | None,
+        Depends(bearer_scheme),
+    ],
 ) -> str:
     """
-    Extrai o token do header Authorization.
-
-    Esperado:
-    Authorization: Bearer <token>
+    Extrai o token Bearer do header Authorization.
     """
-    if authorization is None:
+    if credentials is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Header Authorization ausente.",
         )
 
-    scheme, _, token = authorization.partition(" ")
-
-    if scheme.lower() != "bearer" or not token:
+    if credentials.scheme.lower() != "bearer":
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Header Authorization inválido. Use: Bearer <token>",
+            detail="Header Authorization inválido. Use Bearer <token>.",
         )
 
-    return token
+    return credentials.credentials
 
 
 def get_current_user(
     token: Annotated[str, Depends(get_bearer_token)],
 ) -> Any:
     """
-    Valida o JWT do usuário no Supabase e retorna o objeto user.
+    Valida o JWT no Supabase e retorna o usuário autenticado.
     """
     try:
-        response = supabase.auth.get_user(token)
+        response = supabase_public.auth.get_user(token)
     except Exception as exc:
+        detail = getattr(exc, "message", None) or str(exc)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token inválido ou expirado.",
+            detail=f"Token inválido ou expirado: {detail}",
         ) from exc
 
     user = getattr(response, "user", None)
