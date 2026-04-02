@@ -60,6 +60,7 @@ backend/
 ├─ .env
 ├─ requirements.txt
 └─ README.md
+```
 
 ## Como rodar
 
@@ -68,3 +69,18 @@ python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
+```
+## Configurar o .env
+
+```env
+PROJECT_NAME=Nutri Backend
+ENVIRONMENT=dev
+API_V1_PREFIX=/api/v1
+FRONTEND_URL=http://localhost:3000
+
+SUPABASE_URL=
+SUPABASE_KEY=
+SUPABASE_SECRET_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
