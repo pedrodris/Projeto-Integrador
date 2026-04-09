@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { Apple } from "lucide-react";
 
 type FormData = {
   email: string;
