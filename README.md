@@ -17,6 +17,13 @@ Em um terminal digite os seguintes comandos:
 npm install  
 npm run dev
 
-Backend:
+Backend: 
+ Em um terminal digite os seguintes comandos:
+ Set-Location .\nutri-backend
+ python -m venv .venv
+ .venv\Scripts\activate
+ pip install -r requirements.txt
+ python -m uvicorn app.main:app --reload
+
 
 
