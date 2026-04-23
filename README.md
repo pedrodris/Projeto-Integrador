@@ -14,6 +14,7 @@ Esse repositório consiste no desenvolvimento de um site com ferramentas auxilia
 
 Frontend:
 Em um terminal digite os seguintes comandos:
+Set-Location .\frontend
 npm install  
 npm run dev
 
