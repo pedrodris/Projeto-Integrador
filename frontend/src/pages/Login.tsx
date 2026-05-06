@@ -1,4 +1,8 @@
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { extractApiErrorMessage } from "../lib/api/errors";
 
 type FormData = {
   email: string;
@@ -7,10 +11,26 @@ type FormData = {
 };
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [apiError, setApiError] = useState("");
   const { register, handleSubmit } = useForm<FormData>();
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  async function onSubmit(data: FormData) {
+    setApiError("");
+
+    try {
+      const hasCompletedProfile = await login({
+        email: data.email,
+        password: data.password,
+      });
+
+      navigate(hasCompletedProfile ? "/dashboard" : "/profile/setup", {
+        replace: true,
+      });
+    } catch (error) {
+      setApiError(extractApiErrorMessage(error));
+    }
   }
 
   return (
@@ -37,8 +57,8 @@ export default function Login() {
 
             {/* Email */}
             <input
-              type="text"
-              placeholder="Email ou CPF"
+              type="email"
+              placeholder="Email"
               {...register("email")}
               className="w-full h-11 px-4 rounded-xl border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-orange-400"
             />
@@ -73,6 +93,12 @@ export default function Login() {
             >
               Entrar
             </button>
+
+            {apiError ? (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                {apiError}
+              </p>
+            ) : null}
           </form>
 
           {/* Divider */}
@@ -113,9 +139,9 @@ export default function Login() {
           {/* Cadastro */}
           <p className="text-center text-sm text-gray-600 mt-8">
             Não tem cadastro?{" "}
-            <a href="/register" className="text-orange-500 hover:underline">
+            <Link to="/register" className="text-orange-500 hover:underline">
               Cadastre-se
-            </a>
+            </Link>
           </p>
         </div>
       </div>

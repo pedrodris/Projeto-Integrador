@@ -1,4 +1,8 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { extractApiErrorMessage } from "../lib/api/errors";
 
 type FormData = {
   name: string;
@@ -11,10 +15,43 @@ type FormData = {
 };
 
 export default function Register() {
+  const navigate = useNavigate();
+  const { register: registerUser } = useAuth();
+  const [apiError, setApiError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   const { register, handleSubmit } = useForm<FormData>();
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  async function onSubmit(data: FormData) {
+    setApiError("");
+    setSuccessMessage("");
+
+    if (data.password !== data.confirmPassword) {
+      setApiError("As senhas nao conferem.");
+      return;
+    }
+
+    if (!data.terms) {
+      setApiError("Voce precisa aceitar os termos para continuar.");
+      return;
+    }
+
+    try {
+      const response = await registerUser({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (response.session_created) {
+        navigate("/profile/setup", { replace: true });
+        return;
+      }
+
+      setSuccessMessage(response.message || "Conta criada. Faca login para continuar.");
+      navigate("/login", { replace: true });
+    } catch (error) {
+      setApiError(extractApiErrorMessage(error));
+    }
   }
 
   return (
@@ -81,6 +118,25 @@ export default function Register() {
             <button className="w-full h-11 bg-yellow-400 rounded-xl font-semibold hover:bg-yellow-500">
               Continuar para os planos
             </button>
+
+            {apiError ? (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                {apiError}
+              </p>
+            ) : null}
+
+            {successMessage ? (
+              <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+                {successMessage}
+              </p>
+            ) : null}
+
+            <p className="text-center text-sm text-gray-600 mt-3">
+              Ja tem cadastro?{" "}
+              <Link to="/login" className="text-orange-500 hover:underline">
+                Fazer login
+              </Link>
+            </p>
           </form>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -18,9 +19,12 @@ export default function Home() {
           eficiente no dia a dia.
         </p>
 
-        <button className="bg-yellow-300 px-6 py-3 rounded-xl font-semibold hover:bg-yellow-400">
+        <Link
+          to="/register"
+          className="inline-block bg-yellow-300 px-6 py-3 rounded-xl font-semibold hover:bg-yellow-400"
+        >
           Experimente grátis
-        </button>
+        </Link>
       </section>
 
       {/* FUNCIONALIDADES */}

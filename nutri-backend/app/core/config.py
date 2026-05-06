@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "dev"
     API_V1_PREFIX: str = "/api/v1"
     FRONTEND_URL: str = "http://localhost:3000"
+    BACKEND_URL: str = "http://localhost:8000"
 
     SUPABASE_URL: str = ""
     SUPABASE_KEY: str = ""

@@ -1,6 +1,6 @@
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File, UploadFile
 
 from app.api.deps import get_current_user
 from app.schemas.profile import (
@@ -23,6 +23,15 @@ def setup_profile(
     current_user: Annotated[Any, Depends(get_current_user)],
 ):
     return ProfileService.setup_profile(current_user, payload)
+
+
+@router.post("/avatar")
+async def upload_avatar(
+    current_user: Annotated[Any, Depends(get_current_user)],
+    avatar: UploadFile | None = File(None),
+):
+    """Upload a profile avatar image and return the profile details with updated `avatar_url`."""
+    return await ProfileService.upload_avatar(current_user, avatar)
 
 
 @router.get("/me", response_model=BaseProfileResponse)
