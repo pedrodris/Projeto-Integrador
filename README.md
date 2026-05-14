@@ -12,19 +12,19 @@ Esse repositório consiste no desenvolvimento de um site com ferramentas auxilia
 
 # Instruções de Execução:
 
-Frontend:
-Em um terminal digite os seguintes comandos:
-Set-Location .\frontend
-npm install  
-npm run dev
+Frontend: <br>
+Em um terminal digite os seguintes comandos: <br>
+Set-Location .\frontend <br>
+npm install <br>
+npm run dev <br>
 
 Backend: 
- Em um terminal digite os seguintes comandos:
- Set-Location .\nutri-backend
- python -m venv .venv
- .venv\Scripts\activate
- pip install -r requirements.txt
- python -m uvicorn app.main:app --reload
+ Em um terminal digite os seguintes comandos: <br>
+ Set-Location .\nutri-backend <br> 
+ python -m venv .venv <br>
+ .venv\Scripts\activate <br>
+ pip install -r requirements.txt <br>
+ python -m uvicorn app.main:app --reload <br>
 
 
 
