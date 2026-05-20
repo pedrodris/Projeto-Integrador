@@ -1,0 +1,26 @@
+# Ambiente / secrets
+.env
+*.env
+!.env.example
+!.env.exemplo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+
+# Sistema
+.DS_Store
+Thumbs.db
