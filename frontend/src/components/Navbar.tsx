@@ -7,38 +7,36 @@ export default function Navbar() {
         
         {/* Logo */}
         <h1 className="text-xl font-bold text-gray-900">
-          App Nutricionista
+          NutriCare
         </h1>
 
         {/* Menu */}
         <nav className="hidden md:flex gap-6 text-sm text-gray-600">
-  <a
-    href="#"
-    className="relative transition hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-orange-500 after:transition-all hover:after:w-full"
-  >
-    Funções
-  </a>
-
-  <a
-    href="#"
-    className="relative transition hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-orange-500 after:transition-all hover:after:w-full"
-  >
-    Planos
-  </a>
-
-  <a
-    href="#"
-    className="relative transition hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-orange-500 after:transition-all hover:after:w-full"
-  >
-    Blog
-  </a>
-</nav>
+          <a
+            href="/#funcoes"
+            className="relative transition hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-orange-500 after:transition-all hover:after:w-full"
+          >
+            Funções
+          </a>
+          <a
+            href="/#planos"
+            className="relative transition hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-orange-500 after:transition-all hover:after:w-full"
+          >
+            Planos
+          </a>
+          <a
+            href="#"
+            className="relative transition hover:text-orange-500 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-orange-500 after:transition-all hover:after:w-full"
+          >
+            Blog
+          </a>
+        </nav>
 
         {/* Ações */}
         <div className="flex items-center gap-4">
-          <button className="text-sm text-gray-700">
+          <Link to="/register" className="text-sm text-gray-700 hover:text-orange-500 transition">
             Experimente grátis
-          </button>
+          </Link>
 
           <Link
             to="/"

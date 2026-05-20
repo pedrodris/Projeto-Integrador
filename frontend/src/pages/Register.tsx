@@ -29,7 +29,7 @@ export default function Register() {
         <div className="w-full max-w-md">
 
           <h1 className="text-2xl font-bold text-center mb-8">
-            App Nutricionista
+            NutriCare
           </h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

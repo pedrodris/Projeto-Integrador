@@ -1,15 +1,29 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import RequireAuth from "../auth/RequireAuth";
+import Dashboard from "../pages/Dashboard";
+import DietPlanCreate from "../pages/DietPlanCreate";
+import DietPlans from "../pages/DietPlans";
 import Home from "../pages/Home";
+import Login from "../pages/Login";
+import MyDiet from "../pages/MyDiet";
+import Register from "../pages/Register";
+import ShoppingList from "../pages/ShoppingList";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/app" element={<Dashboard />} />
+          <Route path="/app/dietas" element={<DietPlans />} />
+          <Route path="/app/dietas/nova" element={<DietPlanCreate />} />
+          <Route path="/app/minha-dieta" element={<MyDiet />} />
+          <Route path="/app/lista-de-compras" element={<ShoppingList />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

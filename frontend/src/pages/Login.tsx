@@ -29,7 +29,7 @@ export default function Login() {
           <div className="flex items-center justify-center gap-3 mb-10">
             <span className="text-4xl"></span>
             <h1 className="text-3xl font-bold text-gray-900">
-              App Nutricionista
+              NutriCare
             </h1>
           </div>
 
