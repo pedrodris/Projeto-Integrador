@@ -6,10 +6,9 @@ export default function RequireAuth() {
   const { session } = useAuth();
   const location = useLocation();
 
-  // TODO: reabilitar autenticação antes do deploy
-  // if (!session) {
-  //   return <Navigate to="/login" replace state={{ from: location }} />;
-  // }
+  if (!session) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
 
   return <Outlet />;
 }

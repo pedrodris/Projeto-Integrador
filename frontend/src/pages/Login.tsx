@@ -1,5 +1,10 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Apple } from "lucide-react";
+
+import { useAuth } from "../auth/useAuth";
+import type { AuthSession } from "../auth/types";
+import { api, getApiErrorMessage } from "../lib/api";
 
 type FormData = {
   email: string;
@@ -8,71 +13,80 @@ type FormData = {
 };
 
 export default function Login() {
-  const { register, handleSubmit } = useForm<FormData>();
+  const navigate = useNavigate();
+  const { setSession } = useAuth();
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormData>();
+  const [error, setError] = useState<string | null>(null);
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  async function onSubmit(data: FormData) {
+    setError(null);
+    try {
+      const res = await api.post<AuthSession>("/auth/login", {
+        email: data.email,
+        password: data.password,
+      });
+      setSession(res.data, data.remember ? "local" : "session");
+      navigate("/app");
+    } catch (err) {
+      setError(getApiErrorMessage(err) || "Email ou senha inválidos.");
+    }
   }
 
   return (
     <div className="min-h-screen flex font-[Inter] bg-[#f5f5f5]">
-      
+
       {/* Lado esquerdo */}
       <div className="w-[35%] bg-orange-500 hidden lg:block" />
 
       {/* Lado direito */}
       <div className="flex w-full lg:w-[65%] items-center justify-center px-6">
-        
+
         <div className="w-full max-w-md">
-          
+
           {/* Logo */}
           <div className="flex items-center justify-center gap-3 mb-10">
-            <span className="text-4xl"></span>
-            <h1 className="text-3xl font-bold text-gray-900">
-              NutriCare
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900">NutriCare</h1>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
-            {/* Email */}
             <input
-              type="text"
-              placeholder="Email ou CPF"
-              {...register("email")}
+              type="email"
+              placeholder="Email"
+              {...register("email", { required: true })}
               className="w-full h-11 px-4 rounded-xl border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-orange-400"
             />
 
-            {/* Senha */}
             <input
               type="password"
               placeholder="Senha"
-              {...register("password")}
+              {...register("password", { required: true })}
               className="w-full h-11 px-4 rounded-xl border border-gray-300 bg-white text-sm outline-none focus:ring-2 focus:ring-orange-400"
             />
 
-            {/* Opções */}
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 text-gray-600">
                 <input type="checkbox" {...register("remember")} />
                 Lembrar acesso
               </label>
-
-              <a
-                href="#"
-                className="text-orange-500 hover:underline"
-              >
+              <a href="#" className="text-orange-500 hover:underline">
                 Esqueci minha senha
               </a>
             </div>
 
-            {/* Botão */}
+            {error && (
+              <p className="text-sm text-red-600 bg-red-50 rounded-xl px-4 py-2.5">
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full h-11 rounded-xl bg-yellow-400 font-semibold text-gray-900 hover:bg-yellow-500 transition"
+              disabled={isSubmitting}
+              className="w-full h-11 rounded-xl bg-yellow-400 font-semibold text-gray-900 hover:bg-yellow-500 transition disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Entrar
+              {isSubmitting ? "Entrando..." : "Entrar"}
             </button>
           </form>
 
@@ -85,38 +99,27 @@ export default function Login() {
 
           {/* Social */}
           <div className="space-y-3">
-            {/* Google */}
-            <button className="w-full h-11 flex items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 transition">
-                <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                alt="Google"
-                className="w-5 h-5"
-                />
-                <span className="text-sm font-medium text-gray-700">
-                Entrar com Google
-                </span>
+            <button
+              type="button"
+              className="w-full h-11 flex items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 transition"
+            >
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+              <span className="text-sm font-medium text-gray-700">Entrar com Google</span>
             </button>
-
-            {/* Apple */}
-            <button className="w-full h-11 flex items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 transition">
-                <img
-                    src="https://www.svgrepo.com/show/303110/apple-black-logo.svg"
-                    alt="Apple"
-                    className="w-5 h-5"
-                />
-                <span className="text-sm font-medium text-gray-700">
-                    Entrar com Apple
-                </span>
+            <button
+              type="button"
+              className="w-full h-11 flex items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 transition"
+            >
+              <img src="https://www.svgrepo.com/show/303110/apple-black-logo.svg" alt="Apple" className="w-5 h-5" />
+              <span className="text-sm font-medium text-gray-700">Entrar com Apple</span>
             </button>
-                
           </div>
 
-          {/* Cadastro */}
           <p className="text-center text-sm text-gray-600 mt-8">
             Não tem cadastro?{" "}
-            <a href="/register" className="text-orange-500 hover:underline">
+            <Link to="/register" className="text-orange-500 hover:underline">
               Cadastre-se
-            </a>
+            </Link>
           </p>
         </div>
       </div>
