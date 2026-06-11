@@ -13,6 +13,7 @@ class PatientSetupData(BaseModel):
     birth_date: str | None = None
     sex: str | None = None
     height_cm: float | None = None
+    weight_kg: float | None = None
     activity_level: str | None = None
     goal_summary: str | None = None
     food_restrictions: str | None = None
@@ -61,6 +62,7 @@ class PatientProfileResponse(BaseModel):
     birth_date: str | None = None
     sex: str | None = None
     height_cm: float | None = None
+    weight_kg: float | None = None
     activity_level: str | None = None
     goal_summary: str | None = None
     food_restrictions: str | None = None

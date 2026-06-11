@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import RequireAuth from "../auth/RequireAuth";
+import DevNav from "../components/DevNav";
 import Dashboard from "../pages/Dashboard";
 import DietPlanCreate from "../pages/DietPlanCreate";
 import DietPlans from "../pages/DietPlans";
@@ -14,6 +15,7 @@ import ShoppingList from "../pages/ShoppingList";
 export default function AppRoutes() {
   return (
     <BrowserRouter>
+      <DevNav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

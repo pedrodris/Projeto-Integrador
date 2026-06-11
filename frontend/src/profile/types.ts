@@ -26,6 +26,7 @@ export type PatientProfile = {
   birth_date: string | null;
   sex: string | null;
   height_cm: number | null;
+  weight_kg: number | null;
   activity_level: string | null;
   goal_summary: string | null;
   food_restrictions: string | null;
@@ -51,5 +52,14 @@ export type ProfileSetupPayload = {
     specialty?: string;
     bio?: string;
   };
-  patient_profile?: Record<string, never>;
+  patient_profile?: {
+    birth_date?: string;
+    sex?: string;
+    height_cm?: number;
+    weight_kg?: number;
+    activity_level?: string;
+    goal_summary?: string;
+    food_restrictions?: string;
+    medical_notes?: string;
+  };
 };
