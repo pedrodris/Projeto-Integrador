@@ -29,6 +29,7 @@ Backend:
  pip install -r requirements.txt
  python -m uvicorn app.main:app --reload
 
+---
 
 ## EVOLUÇÃO — Início vs. Estado atual
 
