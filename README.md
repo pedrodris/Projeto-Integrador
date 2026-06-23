@@ -1,4 +1,4 @@
-# Projeto-Integrador - Aplicativo Nutricionista
+# Projeto-Integrador - NutriCare
 
 # Integrantes: 
 - Eliza Freitas de Castro
