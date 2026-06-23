@@ -30,4 +30,21 @@ Backend:
  python -m uvicorn app.main:app --reload
 
 
+## EVOLUÇÃO — Início vs. Estado atual
 
+| Área | Início | Estado atual |
+|---|---|---|
+| **Autenticação** | Login/registro simples, sem renovação | JWT refresh automático com singleton promise, sem race condition |
+| **Rotas** | ~5 rotas básicas | 14 rotas, todas protegidas via `RequireAuth` |
+| **Dashboard** | Cards estáticos por role | Badges de não lidas, banner de convites, avatar, cards específicos por role |
+| **Dieta do paciente** | Visualização estática | Checklist reativo, gráfico de adesão, view semana/dia, histórico de peso, PDF |
+| **Editor de plano** | Apenas visualização | Editor inline por dia + aplicar para todos os dias |
+| **Busca de alimentos** | Campo de texto livre | Autocomplete TACO com 80+ alimentos brasileiros, auto-preenchimento de quantidade e unidade |
+| **Mensagens** | Chat básico sem estado de leitura | Mark-as-read, badges, polling, notificações nativas do browser |
+| **Perfil** | Setup obrigatório apenas | Edição completa com avatar, especialidade, dados de saúde por role |
+| **Convites** | Vínculo direto e imediato | Fluxo de convite com aceitar/recusar no Dashboard |
+| **Histórico** | Nenhum | Histórico de planos do paciente com status e nutricionista |
+| **Backend** | ~8 endpoints básicos | 20+ endpoints, validações de role, enriquecimento entre tabelas |
+| **Segurança API** | Token sem renovação | Interceptor Axios com singleton promise evita refreshes paralelos |
+
+---
