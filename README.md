@@ -10,6 +10,8 @@
 # Descrição
 Esse repositório consiste no desenvolvimento de um site com ferramentas auxiliadoras para nutricionistas e seus pacientes. Em sua versão final é previsto: a possibilidade de fazer login e cadastro no site; ter acesso a listas nutricionais e de compras; chat entre nutricionista e seus pacientes 1:1; sistema de notificações e lembrete;
 
+# Link Resumo Executivo: https://docs.google.com/document/d/1w40eF5QYKog1Rj22_BCrdCqP8hqQKt0aKfcndPbvxDc/edit?usp=sharing
+
 # Instruções de Execução:
 
 Frontend:
