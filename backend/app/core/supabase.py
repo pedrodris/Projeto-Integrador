@@ -87,26 +87,32 @@ def _get_attr(obj: object, name: str):
 
 
 def extract_user_from_response(resp: object) -> SupabaseUser | None:
-    """Return a SupabaseUser if present in the response, otherwise None."""
+    """Return a SupabaseUser if present in the response, otherwise None.
+
+    The installed supabase-py client returns typed objects (e.g. `User`),
+    not plain dicts, so this only checks presence and leaves attribute vs.
+    dict-key access to the callers' `_get_field` helpers.
+    """
     user = _get_attr(resp, "user")
     if not user:
         data = _get_attr(resp, "data")
-        if isinstance(data, dict):
-            user = data.get("user")
+        user = _get_attr(data, "user")
 
-    if isinstance(user, dict):
+    if user:
         return cast(SupabaseUser, cast(object, user))
     return None
 
 
 def extract_session_from_response(resp: object) -> SupabaseSession | None:
-    """Return a SupabaseSession if present in the response, otherwise None."""
+    """Return a SupabaseSession if present in the response, otherwise None.
+
+    See `extract_user_from_response` for why this doesn't require a dict.
+    """
     session = _get_attr(resp, "session")
     if not session:
         data = _get_attr(resp, "data")
-        if isinstance(data, dict):
-            session = data.get("session")
+        session = _get_attr(data, "session")
 
-    if isinstance(session, dict):
+    if session:
         return cast(SupabaseSession, cast(object, session))
     return None
