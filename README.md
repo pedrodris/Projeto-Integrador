@@ -49,7 +49,7 @@ Backend:
 | **Segurança API** | Token sem renovação | Interceptor Axios com singleton promise evita refreshes paralelos |
 
 ---
-#Contribuições Rndividuais:
+# Contribuições Rndividuais:
 -Eliza Freitas de Castro: Telas Figma, Implementação do botão de login/cadastro por Google e Apple.
 -Guilherme Santana dos Santos: Auxilio na documentação do projeto.
 -João Vitor de Morais Alecrim: Criação,atualização e manutenção de novas telas do frontend
