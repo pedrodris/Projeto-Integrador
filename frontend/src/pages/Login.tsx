@@ -140,6 +140,37 @@ export default function Login() {
             </button>
             <button
               type="button"
+              onClick={async () => {
+                setError(null);
+                try {
+                  const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: "apple",
+                    options: {
+                      redirectTo: `${window.location.origin}/auth/callback`,
+                    },
+                  });
+
+                  if (error) {
+                    console.error("Apple sign-in error:", error);
+                    setError(
+                      "Erro ao iniciar login com Apple: " +
+                        (error.message || String(error)),
+                    );
+                    return;
+                  }
+
+                  const url = data?.url;
+                  if (url) {
+                    window.location.href = url;
+                  }
+                } catch (exc: any) {
+                  console.error(exc);
+                  setError(
+                    "Erro ao iniciar login com Apple: " +
+                      (exc?.message ?? String(exc)),
+                  );
+                }
+              }}
               className="w-full h-11 flex items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 transition"
             >
               <img
