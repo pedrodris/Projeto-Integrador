@@ -10,9 +10,11 @@
 - Guilherme Santana dos Santos
 
 ## Descrição
-Este repositório reúne o desenvolvimento de uma plataforma para acompanhamento nutricional, com foco em conectar nutricionistas e pacientes em um fluxo completo de gestão de perfil, dietas, mensagens, lembretes e relatórios.
+Este repositório reúne o desenvolvimento de uma plataforma de acompanhamento nutricional voltada para conectar nutricionistas e pacientes em um fluxo completo de gestão de perfil, dietas, mensagens, lembretes, notificações e acompanhamento de evolução clínica.
 
-A aplicação foi estruturada em frontend e backend independentes, com autenticação real, rotas protegidas e integração com Supabase.
+A proposta da aplicação é facilitar a rotina de ambos os lados do relacionamento: pacientes recebem orientação e organização alimentar de forma mais clara e prática, enquanto nutricionistas conseguem acompanhar histórico, definir planos alimentares e manter comunicação contínua com seus pacientes em um ambiente digital centralizado.
+
+A solução foi estruturada em frontend e backend independentes, com autenticação real, rotas protegidas, gestão de usuários por papel e integração com Supabase para autenticação, banco de dados e armazenamento de dados. O projeto busca representar um MVP funcional de um sistema completo de nutrição digital, cobrindo desde cadastro e onboarding até gestão de dietas, vínculo profissional-paciente e relatórios de adesão.
 
 ## Visão geral da solução
 
