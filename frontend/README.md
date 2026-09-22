@@ -1,73 +1,129 @@
-# React + TypeScript + Vite
+# Frontend - NutriCare
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web do projeto NutriCare, desenvolvida em React + TypeScript com Vite.
 
-Currently, two official plugins are available:
+## Visão geral
+O frontend fornece a interface principal para:
+- autenticação de usuários
+- onboarding e edição de perfil
+- navegação por papéis (`nutritionist` e `patient`)
+- criação e visualização de dietas
+- gestão de pacientes e vínculos
+- mensagens, lembretes e notificações
+- relatórios e visualizações de adesão
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router DOM
+- Axios
+- Supabase client
 
-## React Compiler
+## Estrutura principal
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+frontend/
+├─ public/
+├─ src/
+│  ├─ auth/
+│  ├─ components/
+│  ├─ config/
+│  ├─ data/
+│  ├─ diet/
+│  ├─ hooks/
+│  ├─ lib/
+│  ├─ notifications/
+│  ├─ pages/
+│  ├─ profile/
+│  ├─ reminders/
+│  ├─ routes/
+│  ├─ App.css
+│  ├─ App.tsx
+│  ├─ index.css
+│  ├─ main.tsx
+│  └─ vite-env.d.ts
+├─ .env.example
+├─ eslint.config.js
+├─ index.html
+├─ package.json
+├─ postcss.config.js
+├─ tailwind.config.js
+├─ tsconfig.json
+├─ vite.config.ts
+├─ README.md
+└─ vercel.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Rotas principais
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Públicas
+- `/`
+- `/login`
+- `/register`
+- `/auth/callback`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Protegidas
+- `/app`
+- `/profile/setup`
+- `/profile/edit`
+- `/app/dietas`
+- `/app/dietas/nova`
+- `/app/dietas/:id`
+- `/app/dietas/:id/editar`
+- `/app/dietas/presets/novo`
+- `/app/dietas/presets/:id/editar`
+- `/app/pacientes`
+- `/app/minha-dieta`
+- `/app/lista-de-compras`
+- `/app/mensagens`
+- `/app/notificacoes`
+- `/app/notificacoes/preferencias`
+- `/app/lembretes`
+- `/app/meus-planos`
+- `/app/relatorio-adesao`
+
+## Como rodar
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
+
+## Variáveis de ambiente
+Crie um arquivo `.env` com base em `.env.example`:
+
+```env
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+```
+
+## Funcionalidades atuais
+- autenticação por email/senha
+- refresh automático de token
+- setup e edição de perfil
+- dashboard por papel
+- criação de planos alimentares
+- histórico de dietas
+- checklist da dieta e lista de compras
+- mensagens entre usuários
+- notificações e lembretes
+- relatório de adesão
+
+## Observações importantes
+- O fluxo de login com Google foi iniciado, mas ainda não está completamente concluído.
+- A aplicação está integrada ao backend para grande parte do domínio principal do produto.
+- Há validações e fluxo final que ainda precisam de refinamento em áreas de UX e testes automatizados.
+
+## Status
+O frontend está em estágio funcional avançado e já cobre as principais telas e fluxos do MVP, mas ainda faltam melhorias como:
+- fechamento do login social
+- testes automatizados
+- paginação/virtualização de listas
+- refinamento de erros e feedback visual
+
+---
+
+Consulte também `docs/frontend-current-status.md` e `docs/frontend-architecture.md`.

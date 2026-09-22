@@ -1,57 +1,153 @@
 # Projeto-Integrador - NutriCare
 
-# Integrantes: 
+## Integrantes
 - João Vitor de Morais Alecrim
 - Pedro Vinícius Rodrigues de Pereira Nunes
 - Thiago Kenji Ikuta
 
-# Descrição
-Esse repositório consiste no desenvolvimento de um site com ferramentas auxiliadoras para nutricionistas e seus pacientes. Em sua versão final é previsto: a possibilidade de fazer login e cadastro no site; ter acesso a listas nutricionais e de compras; chat entre nutricionista e seus pacientes 1:1; sistema de notificações e lembrete;
+## Descrição
+Este repositório reúne o desenvolvimento de uma plataforma para acompanhamento nutricional, com foco em conectar nutricionistas e pacientes em um fluxo completo de gestão de perfil, dietas, mensagens, lembretes, notificações e vínculos.
 
-## Link Resumo Executivo: 
-https://docs.google.com/document/d/1w40eF5QYKog1Rj22_BCrdCqP8hqQKt0aKfcndPbvxDc/edit?usp=sharing
+A aplicação foi estruturada em frontend e backend independentes, com autenticação real, rotas protegidas e integração com Supabase.
 
-# Instruções de Execução:
+## Visão geral da solução
 
-Frontend:
-Em um terminal digite os seguintes comandos:
-Set-Location .\frontend
-npm install  
+### Frontend
+- React + TypeScript + Vite
+- Tailwind CSS
+- React Router
+- Axios com refresh automático de token
+- Fluxo de autenticação com email/senha e integração inicial ao login social (Google)
+
+### Backend
+- Python + FastAPI
+- Supabase Auth + Supabase DB
+- Rotas organizadas em módulos por domínio
+- Gestão de perfis, dietas, vínculos, mensagens e notificações
+
+## Funcionalidades implementadas
+
+### Autenticação
+- cadastro por email/senha
+- login
+- refresh de token
+- validação de sessão autenticada
+- perfil de usuário por papel (`patient` / `nutritionist`)
+
+### Perfil
+- setup inicial
+- edição de dados cadastrais
+- avatar por URL
+- histórico de peso
+- dados específicos por tipo de usuário
+
+### Vínculo nutricionista-paciente
+- criação de vínculo direto
+- convite para vínculo
+- aceite e recusa de convite
+- listagem de pacientes e vínculos
+
+### Dietas
+- criação e edição de planos alimentares
+- visualização de histórico
+- planos ativos e anteriores
+- edição por dia/semana
+- presets e reutilização de refeições
+- checklist e guia de compras
+
+### Mensagens e comunicação
+- chat entre nutricionista e paciente
+- marcação de mensagens como lidas
+- contagem de mensagens não lidas
+
+### Lembretes e notificações
+- lembretes para pacientes
+- configurações de notificações
+- inbox de notificações
+
+## Estrutura do repositório
+
+```text
+Projeto-Integrador/
+├─ backend/
+│  ├─ app/
+│  │  ├─ api/
+│  │  │  ├─ routes/
+│  │  │  └─ deps.py
+│  │  ├─ core/
+│  │  ├─ schemas/
+│  │  ├─ services/
+│  │  └─ main.py
+│  ├─ tests/
+│  ├─ sql/
+│  ├─ .env.example
+│  ├─ pytest.ini
+│  ├─ requirements.txt
+│  └─ README.md
+├─ frontend/
+│  ├─ src/
+│  ├─ public/
+│  ├─ .env.example
+│  ├─ package.json
+│  ├─ vite.config.ts
+│  └─ README.md
+├─ docs/
+│  ├─ backend-architecture.md
+│  ├─ backend-current-status.md
+│  ├─ frontend-architecture.md
+│  ├─ frontend-current-status.md
+│  ├─ business.md
+│  └─ historico-implementacoes.md
+├─ README.md
+├─ pyrightconfig.json
+└─ package-lock.json
+```
+
+## Como executar
+
+### Frontend
+```bash
+cd frontend
+npm install
 npm run dev
+```
 
-Backend: 
- Em um terminal digite os seguintes comandos:
- Set-Location .\nutri-backend
- python -m venv .venv
- .venv\Scripts\activate
- pip install -r requirements.txt
- python -m uvicorn app.main:app --reload
+### Backend
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate   # Linux/macOS
+# ou .venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+## Documentação técnica
+A pasta `docs/` contém os principais registros de arquitetura e status do projeto:
+- `backend-current-status.md`
+- `frontend-current-status.md`
+- `backend-architecture.md`
+- `frontend-architecture.md`
+- `business.md`
+- `historico-implementacoes.md`
+
+## Status atual
+O projeto já está em um estágio funcional avançado, com domínio principal implementado e validado manualmente em várias partes do fluxo clínico e operacional. Ainda há pontos pendentes, especialmente em:
+- testes automatizados
+- acabamento do login social (Google)
+- paginação em listagens de grande volume
+- refinamento de regras de permissão e validação por papel
+
+## Observações
+O login com Google foi iniciado, mas ainda não está completamente concluído. Há também documentação mais antiga em alguns README do repositório que ainda precisa ser alinhada com o código atual.
+
+## Contribuições
+- Eliza Freitas de Castro: telas Figma e implementação de login social
+- Guilherme Santana dos Santos: documentação do projeto
+- João Vitor de Morais Alecrim: desenvolvimento de telas do frontend
+- Pedro Vinícius Rodrigues de Pereira Nunes: apoio em backend e documentação do GitHub
+- Thiago Kenji Ikuta: apoio em backend e integração frontend/backend
 
 ---
 
-## EVOLUÇÃO — Início vs. Estado atual
-
-| Área | Início | Estado atual |
-|---|---|---|
-| **Autenticação** | Login/registro simples, sem renovação | JWT refresh automático com singleton promise, sem race condition |
-| **Rotas** | ~5 rotas básicas | 14 rotas, todas protegidas via `RequireAuth` |
-| **Dashboard** | Cards estáticos por role | Badges de não lidas, banner de convites, avatar, cards específicos por role |
-| **Dieta do paciente** | Visualização estática | Checklist reativo, gráfico de adesão, view semana/dia, histórico de peso, PDF |
-| **Editor de plano** | Apenas visualização | Editor inline por dia + aplicar para todos os dias |
-| **Busca de alimentos** | Campo de texto livre | Autocomplete TACO com 80+ alimentos brasileiros, auto-preenchimento de quantidade e unidade |
-| **Mensagens** | Chat básico sem estado de leitura | Mark-as-read, badges, polling, notificações nativas do browser |
-| **Perfil** | Setup obrigatório apenas | Edição completa com avatar, especialidade, dados de saúde por role |
-| **Convites** | Vínculo direto e imediato | Fluxo de convite com aceitar/recusar no Dashboard |
-| **Histórico** | Nenhum | Histórico de planos do paciente com status e nutricionista |
-| **Backend** | ~8 endpoints básicos | 20+ endpoints, validações de role, enriquecimento entre tabelas |
-| **Segurança API** | Token sem renovação | Interceptor Axios com singleton promise evita refreshes paralelos |
-
----
-# Contribuições Rndividuais:
-- Eliza Freitas de Castro: Telas Figma, Implementação do botão de login/cadastro por Google e Apple. *
-- Guilherme Santana dos Santos: Auxilio na documentação do projeto. *
-- João Vitor de Morais Alecrim: Criação,atualização e manutenção de novas telas do frontend
-- Pedro Vinícius Rodrigues de Pereira Nunes: Auxilio no backend, atualização do README, documentação GITHUB.
-- Thiago Kenji Ikuta: Auxilio no backend e integração do frontend com o backend.
-
-## OBS: Evidências visuais disponíveis no Resumo Executivo.
+Projeto em desenvolvimento como parte do Projeto Integrador 4.

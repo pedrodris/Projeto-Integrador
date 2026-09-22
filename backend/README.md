@@ -3,31 +3,16 @@
 Backend da plataforma de acompanhamento nutricional.
 
 ## Visão geral
-
 Este backend é responsável por:
-
 - autenticação de usuários via Supabase Auth
-- validação de sessão/token no servidor
+- validação de sessão e token no servidor
 - gerenciamento do perfil base do usuário
 - gerenciamento do perfil específico por papel (`patient` ou `nutritionist`)
-- servir como base para as próximas funcionalidades do sistema, como vínculo entre nutricionista e paciente, mensagens e dietas
-
-## Objetivo atual do projeto
-
-Neste estágio, o foco do backend é garantir que a base do sistema esteja sólida antes da implementação das regras principais de negócio.
-
-Atualmente, o backend já possui fluxo funcional para:
-
-- cadastro de usuário
-- login
-- validação do usuário autenticado
-- configuração inicial de perfil
-- leitura do perfil base
-- leitura dos detalhes do perfil
-- atualização do perfil base
+- gestão de vínculos nutricionista-paciente
+- gestão de dietas, presets de dieta, mensagens e notificações
+- suporte a lembretes e configurações de notificação
 
 ## Stack
-
 - Python
 - FastAPI
 - Uvicorn
@@ -39,38 +24,61 @@ Atualmente, o backend já possui fluxo funcional para:
 ```text
 backend/
 ├─ app/
-│  ├─ main.py
+│  ├─ api/
+│  │  ├─ routes/
+│  │  │  ├─ auth.py
+│  │  │  ├─ care_link.py
+│  │  │  ├─ diet.py
+│  │  │  ├─ diet_preset.py
+│  │  │  ├─ health.py
+│  │  │  ├─ message.py
+│  │  │  ├─ notification.py
+│  │  │  ├─ profile.py
+│  │  │  └─ reminder.py
+│  │  └─ deps.py
 │  ├─ core/
 │  │  ├─ config.py
 │  │  └─ supabase.py
-│  ├─ api/
-│  │  ├─ deps.py
-│  │  └─ routes/
-│  │     ├─ health.py
-│  │     ├─ auth.py
-│  │     └─ profile.py
 │  ├─ schemas/
-│  │  ├─ auth.py
-│  │  └─ profile.py
-│  └─ services/
-│     └─ profile_service.py
-├─ docs/
-│  ├─ architecture.md
-│  └─ current-status.md
-├─ .env
+│  ├─ services/
+│  ├─ main.py
+│  └─ __init__.py
+├─ sql/
+├─ tests/
+├─ .env.example
+├─ pytest.ini
 ├─ requirements.txt
-└─ README.md
+├─ README.md
+└─ .gitignore
 ```
+
+## Funcionalidades atuais
+- `POST /api/v1/auth/signup`
+- `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `GET /api/v1/auth/me`
+- `POST /api/v1/profile/setup`
+- `GET /api/v1/profile/me`
+- `GET /api/v1/profile/me/details`
+- `PATCH /api/v1/profile/me`
+- `GET /api/v1/profile/weight-history`
+- `POST /api/v1/profile/weight-entry`
+- `DELETE /api/v1/profile/weight-entry/{date}`
+- rotas de vínculo, dietas, mensagens, presets, lembretes e notificações
 
 ## Como rodar
 
 ```bash
+cd backend
 python -m venv .venv
-.venv\Scripts\activate
+source .venv/bin/activate
+# ou .venv\Scripts\activate no Windows
 pip install -r requirements.txt
-python -m uvicorn app.main:app --reload
+uvicorn app.main:app --reload
 ```
-## Configurar o .env
+
+## Configuração do ambiente
+Crie um arquivo `.env` com base no `.env.example`:
 
 ```env
 PROJECT_NAME=Nutri Backend
@@ -84,3 +92,18 @@ SUPABASE_SECRET_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
+## Observações de implementação
+- O backend usa `Supabase Auth` e `Supabase Admin` para autenticação e acesso aos dados.
+- O sistema está organizado em camadas de rotas, schemas e serviços.
+- O backend já expõe vários módulos além do escopo inicial, incluindo dieta, vínculo, mensagens e notificações.
+
+## Status
+O backend está funcional para o MVP e cobre grande parte do domínio da aplicação, mas ainda há pendências em:
+- testes automatizados
+- paginação de listagens
+- refinamento de permissões por papel
+- login social completo no fluxo de callback
+
+---
+
+Veja também a documentação em `docs/backend-current-status.md`.
