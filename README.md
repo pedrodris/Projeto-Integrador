@@ -1,12 +1,16 @@
 # Projeto-Integrador - NutriCare
 
-## Integrantes
+## Integrantes atuais
 - João Vitor de Morais Alecrim
 - Pedro Vinícius Rodrigues de Pereira Nunes
 - Thiago Kenji Ikuta
 
+## Antigos integrantes
+- Eliza Freitas de Castro
+- Guilherme Santana dos Santos
+
 ## Descrição
-Este repositório reúne o desenvolvimento de uma plataforma para acompanhamento nutricional, com foco em conectar nutricionistas e pacientes em um fluxo completo de gestão de perfil, dietas, mensagens, lembretes, notificações e vínculos.
+Este repositório reúne o desenvolvimento de uma plataforma para acompanhamento nutricional, com foco em conectar nutricionistas e pacientes em um fluxo completo de gestão de perfil, dietas, mensagens, lembretes e relatórios.
 
 A aplicação foi estruturada em frontend e backend independentes, com autenticação real, rotas protegidas e integração com Supabase.
 
@@ -132,7 +136,7 @@ A pasta `docs/` contém os principais registros de arquitetura e status do proje
 - `historico-implementacoes.md`
 
 ## Status atual
-O projeto já está em um estágio funcional avançado, com domínio principal implementado e validado manualmente em várias partes do fluxo clínico e operacional. Ainda há pontos pendentes, especialmente em:
+O projeto já está em um estágio funcional avançado, com domínio principal implementado e validado manualmente em várias partes do fluxo clínico e operacional. Ainda há pontos pendentes, e o foco principal segue em:
 - testes automatizados
 - acabamento do login social (Google)
 - paginação em listagens de grande volume
@@ -142,11 +146,15 @@ O projeto já está em um estágio funcional avançado, com domínio principal i
 O login com Google foi iniciado, mas ainda não está completamente concluído. Há também documentação mais antiga em alguns README do repositório que ainda precisa ser alinhada com o código atual.
 
 ## Contribuições
-- Eliza Freitas de Castro: telas Figma e implementação de login social
-- Guilherme Santana dos Santos: documentação do projeto
+
+### Membros atuais
 - João Vitor de Morais Alecrim: desenvolvimento de telas do frontend
 - Pedro Vinícius Rodrigues de Pereira Nunes: apoio em backend e documentação do GitHub
 - Thiago Kenji Ikuta: apoio em backend e integração frontend/backend
+
+### Antigos integrantes
+- Eliza Freitas de Castro: telas Figma e implementação inicial do login social
+- Guilherme Santana dos Santos: documentação do projeto e apoio inicial na organização do material do repositório
 
 ---
 
