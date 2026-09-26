@@ -147,6 +147,7 @@ export default function MyDiet() {
   const [addingWeight, setAddingWeight] = useState(false);
   const [showWeight, setShowWeight] = useState(false);
   const [recipeMeal, setRecipeMeal] = useState<Meal | null>(null);
+  const [toggleError, setToggleError] = useState<string | null>(null);
 
   function fetchPlan() {
     setLoading(true);
@@ -201,10 +202,12 @@ export default function MyDiet() {
     };
 
     applyOptimistic(!wasChecked);
+    setToggleError(null);
     try {
       await api.post(`/diet/meal-items/${itemId}/toggle`, { completed_on: selectedDateISO });
     } catch {
       applyOptimistic(wasChecked); // reverte em caso de falha
+      setToggleError("Não foi possível salvar. Verifique sua conexão e tente novamente.");
     }
   }
 
@@ -335,6 +338,12 @@ export default function MyDiet() {
                     ))}
                   </ul>
                 )}
+              </div>
+            )}
+
+            {toggleError && (
+              <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-xs text-red-600">
+                {toggleError}
               </div>
             )}
 

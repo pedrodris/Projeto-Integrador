@@ -29,11 +29,30 @@ async function doRefresh(refreshToken: string): Promise<string> {
   return res.data.access_token;
 }
 
+const MAX_NETWORK_RETRIES = 2;
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 // Response interceptor — silently refresh JWT on 401 and retry once
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+
+    // No response at all (CORS-blocked, connection reset, timeout) usually means the
+    // request never actually reached the backend — Render's free tier drops requests
+    // under concurrent load and the browser misreports it as a CORS error. Retrying is
+    // safe here because the server never processed it. Real HTTP error responses (4xx/5xx)
+    // skip this branch since error.response is defined for those.
+    if (!error.response && originalRequest && !originalRequest.url?.includes("/auth/refresh")) {
+      originalRequest._networkRetryCount = (originalRequest._networkRetryCount ?? 0) + 1;
+      if (originalRequest._networkRetryCount <= MAX_NETWORK_RETRIES) {
+        await delay(400 * originalRequest._networkRetryCount);
+        return api(originalRequest);
+      }
+    }
 
     // Only attempt refresh on 401, skip if already retried or if it's the refresh call itself
     if (
