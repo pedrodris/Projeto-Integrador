@@ -14,6 +14,22 @@ DAY_NAMES = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domin
 
 class DietService:
     @staticmethod
+    def _purge_completions_for_meal_ids(meal_ids: list[int]) -> None:
+        """Deletes meal_completions rows referencing any meal_item under the
+        given meal_ids. Must run before deleting those meal_items — the FK from
+        meal_completions.meal_item_id has no ON DELETE CASCADE, so once a patient
+        has marked any item as consumed, deleting/replacing it raises a raw 500
+        (Postgres FK violation) instead of a clean response."""
+        if not meal_ids:
+            return
+        item_resp = (
+            supabase_admin.table("meal_items").select("id").in_("meal_id", meal_ids).execute()
+        )
+        item_ids = [i["id"] for i in (item_resp.data or [])]
+        if item_ids:
+            supabase_admin.table("meal_completions").delete().in_("meal_item_id", item_ids).execute()
+
+    @staticmethod
     def _get_user_id(current_user: Any) -> str:
         user_id = str(getattr(current_user, "id", ""))
         if not user_id:
@@ -384,6 +400,7 @@ class DietService:
             )
             meal_ids = [m["id"] for m in (meals_resp.data or [])]
             if meal_ids:
+                DietService._purge_completions_for_meal_ids(meal_ids)
                 supabase_admin.table("meal_items").delete().in_("meal_id", meal_ids).execute()
                 supabase_admin.table("meals").delete().in_("id", meal_ids).execute()
         else:
@@ -459,6 +476,7 @@ class DietService:
 
             # Delete bottom-up: items → meals → days
             if meal_ids:
+                DietService._purge_completions_for_meal_ids(meal_ids)
                 supabase_admin.table("meal_items").delete().in_("meal_id", meal_ids).execute()
                 supabase_admin.table("meals").delete().in_("id", meal_ids).execute()
             supabase_admin.table("diet_plan_days").delete().in_("id", day_ids).execute()
@@ -517,6 +535,21 @@ class DietService:
         user_id = DietService._get_user_id(current_user)
         DietService._require_nutritionist(user_id)
         DietService._get_plan_or_404(plan_id, user_id)
+
+        days_resp = (
+            supabase_admin.table("diet_plan_days")
+            .select("id")
+            .eq("diet_plan_id", plan_id)
+            .execute()
+        )
+        day_ids = [d["id"] for d in (days_resp.data or [])]
+        if day_ids:
+            meals_resp = (
+                supabase_admin.table("meals").select("id").in_("diet_plan_day_id", day_ids).execute()
+            )
+            meal_ids = [m["id"] for m in (meals_resp.data or [])]
+            DietService._purge_completions_for_meal_ids(meal_ids)
+
         supabase_admin.table("diet_plans").delete().eq("id", plan_id).execute()
 
     @staticmethod

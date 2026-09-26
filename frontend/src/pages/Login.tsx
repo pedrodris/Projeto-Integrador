@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useAuth } from "../auth/useAuth";
@@ -17,13 +17,22 @@ type FormData = {
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setSession } = useAuth();
+  const { session, setSession } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<FormData>();
   const [error, setError] = useState<string | null>(null);
+  // Snapshot taken once at mount: only bounces someone who arrived here already
+  // logged in from a previous visit. A session created by submitting *this*
+  // form must not trigger it, or it would race with this same handler's own
+  // navigate("/app") right after setSession.
+  const [wasAlreadyLoggedIn] = useState(() => Boolean(session));
+
+  if (wasAlreadyLoggedIn) {
+    return <Navigate to="/app" replace />;
+  }
 
   async function onSubmit(data: FormData) {
     setError(null);

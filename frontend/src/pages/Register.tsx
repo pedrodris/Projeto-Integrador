@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
 
@@ -18,10 +18,18 @@ type FormData = {
 
 export default function Register() {
   const navigate = useNavigate();
-  const { setSession } = useAuth();
+  const { session, setSession } = useAuth();
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormData>();
   const [error, setError] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
+  // Snapshot taken once at mount - see the same guard in Login.tsx for why this
+  // can't just check `session` reactively (would race with this form's own
+  // post-signup setSession + navigate).
+  const [wasAlreadyLoggedIn] = useState(() => Boolean(session));
+
+  if (wasAlreadyLoggedIn) {
+    return <Navigate to="/profile/setup" replace />;
+  }
 
   async function onSubmit(data: FormData) {
     setError(null);
